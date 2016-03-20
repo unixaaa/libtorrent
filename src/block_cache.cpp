@@ -242,9 +242,7 @@ static_assert(sizeof(job_action_name)/sizeof(job_action_name[0])
 		return piece_log_t::job_names[j - piece_log_t::flushing];
 	}
 
-#endif // TORRENT_DISABLE_LOGGING
-
-#if TORRENT_USE_ASSERTS
+namespace {
 
 	void print_piece_log(std::vector<piece_log_t> const& piece_log)
 	{
@@ -252,14 +250,15 @@ static_assert(sizeof(job_action_name)/sizeof(job_action_name[0])
 		{
 			if (piece_log[i].block == -1)
 			{
-				std::printf("%d: %s\n", i, job_name(piece_log[i].job));
+				assert_print("%d: %s\n", i, job_name(piece_log[i].job));
 			}
 			else
 			{
-				std::printf("%d: %s %d\n", i, job_name(piece_log[i].job), piece_log[i].block);
+				assert_print("%d: %s %d\n", i, job_name(piece_log[i].job), piece_log[i].block);
 			}
 		}
 	}
+}
 
 	void assert_print_piece(cached_piece_entry const* pe)
 	{
@@ -289,11 +288,7 @@ static_assert(sizeof(job_action_name)/sizeof(job_action_name[0])
 				, int(pe->num_blocks), int(pe->blocks_in_piece), int(pe->hashing_done)
 				, int(pe->marked_for_deletion), int(pe->need_readback), pe->hash_passes
 				, int(pe->read_jobs.size()), int(pe->jobs.size()));
-			for (int i = 0; i < pe->piece_log.size(); ++i)
-			{
-				assert_print("%s %s (%d)", (i==0?"":",")
-					, job_name(pe->piece_log[i].job), pe->piece_log[i].block);
-			}
+			print_piece_log(pe->piece_log);
 		}
 		assert_print("\n");
 	}
@@ -548,7 +543,10 @@ void block_cache::try_evict_one_volatile()
 {
 	INVARIANT_CHECK;
 
-	DLOG(stderr, "[%p] try_evict_one_volatile\n", static_cast<void*>(this));
+	DLOG(stderr, "[%p] try_evict_one_volatile [ size: %d limit: %d]\n"
+		, static_cast<void*>(this)
+		, m_volatile_size
+		, m_max_volatile_blocks);
 
 	if (m_volatile_size < m_max_volatile_blocks) return;
 
@@ -744,9 +742,7 @@ void block_cache::mark_deleted(file_storage const& fs)
 
 cached_piece_entry* block_cache::add_dirty_block(disk_io_job* j)
 {
-#if !defined TORRENT_DISABLE_POOL_ALLOCATOR
 	TORRENT_ASSERT(is_disk_buffer(j->buffer.disk_block));
-#endif
 #ifdef TORRENT_EXPENSIVE_INVARIANT_CHECKS
 	INVARIANT_CHECK;
 #endif
@@ -1695,7 +1691,7 @@ void block_cache::check_invariant() const
 		{
 			if (p.blocks[k].buf)
 			{
-#if !defined TORRENT_DISABLE_POOL_ALLOCATOR && defined TORRENT_EXPENSIVE_INVARIANT_CHECKS
+#if defined TORRENT_EXPENSIVE_INVARIANT_CHECKS
 				TORRENT_PIECE_ASSERT(is_disk_buffer(p.blocks[k].buf), &p);
 
 				// make sure we don't have the same buffer
