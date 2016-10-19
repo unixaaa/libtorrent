@@ -1382,8 +1382,8 @@ int main(int argc, char* argv[])
 	{
 		ip_filter pcf;
 		// 1 is the global peer class. This should be done properly in the future
-		pcf.add_rule(addr4("0.0.0.0")
-			, addr4("255.255.255.255"), 1);
+		pcf.add_rule(address_v4::from_string("0.0.0.0")
+			, address_v4::from_string("255.255.255.255"), 1);
 #if TORRENT_USE_IPV6
 		pcf.add_rule(address_v6::from_string("::")
 			, address_v6::from_string("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), 1);
