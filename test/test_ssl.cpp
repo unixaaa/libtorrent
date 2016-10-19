@@ -306,8 +306,8 @@ void test_ssl(int test_idx, bool use_utp)
 	TEST_EQUAL(ssl_peer_disconnects > 0, test.ssl_disconnects > 0);
 
 	char const* now = time_now_string();
-	std::printf("%s: EXPECT: %s\n", n, test.expected_to_complete ? "SUCCEESS" : "FAILURE");
-	std::printf("%s: RESULT: %s\n", n, tor2.status().is_seeding ? "SUCCEESS" : "FAILURE");
+	std::printf("%s: EXPECT: %s\n", now, test.expected_to_complete ? "SUCCEESS" : "FAILURE");
+	std::printf("%s: RESULT: %s\n", now, tor2.status().is_seeding ? "SUCCEESS" : "FAILURE");
 	TEST_EQUAL(tor2.status().is_seeding, test.expected_to_complete);
 
 	// this allows shutting down the sessions in parallel
