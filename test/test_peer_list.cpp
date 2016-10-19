@@ -363,7 +363,7 @@ TORRENT_TEST(update_peer_port_collide)
 	auto c = std::make_shared<mock_peer_connection>(&t, true, ep("10.0.0.1", 8080));
 	p.new_connection(*c, 0, &st);
 	TEST_EQUAL(p.num_connect_candidates(), 1);
-	// at this point we have two peers, because we think they have different 
+	// at this point we have two peers, because we think they have different
 	// ports
 	TEST_EQUAL(p.num_peers(), 2);
 	st.erased.clear();
@@ -408,7 +408,7 @@ TORRENT_TEST(ip_filter)
 
 	// now, filter one of the IPs and make sure the peer is removed
 	ip_filter filter;
-	filter.add_rule(address_v4::from_string("11.0.0.0"), address_v4::from_string("255.255.255.255"), 1);
+	filter.add_rule(addr4("11.0.0.0"), addr4("255.255.255.255"), 1);
 	std::vector<address> banned;
 	p.apply_ip_filter(filter, &st, banned);
 	// we just erased a peer, because it was filtered by the ip filter
@@ -416,7 +416,7 @@ TORRENT_TEST(ip_filter)
 	TEST_EQUAL(p.num_connect_candidates(), 0);
 	TEST_EQUAL(p.num_peers(), 1);
 	TEST_EQUAL(banned.size(), 1);
-	TEST_EQUAL(banned[0], address_v4::from_string("11.0.0.2"));
+	TEST_EQUAL(banned[0], addr4("11.0.0.2"));
 	TEST_EQUAL(con2->was_disconnected(), true);
 	TEST_EQUAL(con1->was_disconnected(), false);
 }
@@ -454,7 +454,7 @@ TORRENT_TEST(port_filter)
 	TEST_EQUAL(p.num_connect_candidates(), 0);
 	TEST_EQUAL(p.num_peers(), 1);
 	TEST_EQUAL(banned.size(), 1);
-	TEST_EQUAL(banned[0], address_v4::from_string("11.0.0.2"));
+	TEST_EQUAL(banned[0], addr4("11.0.0.2"));
 	TEST_EQUAL(con2->was_disconnected(), true);
 	TEST_EQUAL(con1->was_disconnected(), false);
 }
@@ -554,11 +554,10 @@ TORRENT_TEST(set_ip_filter)
 
 	// trigger the removal of one peer
 	ip_filter filter;
-	filter.add_rule(address_v4::from_string("10.13.0.0")
-		, address_v4::from_string("10.13.255.255"), ip_filter::blocked);
+	filter.add_rule(addr4("10.13.0.0"), addr4("10.13.255.255"), ip_filter::blocked);
 	p.apply_ip_filter(filter, &st, banned);
 	TEST_EQUAL(st.erased.size(), 1);
-	TEST_EQUAL(st.erased[0]->address(), address_v4::from_string("10.13.0.0"));
+	TEST_EQUAL(st.erased[0]->address(), addr4("10.13.0.0"));
 	TEST_EQUAL(p.num_peers(), 99);
 	TEST_EQUAL(p.num_connect_candidates(), 99);
 }
@@ -588,7 +587,7 @@ TORRENT_TEST(set_port_filter)
 	filter.add_rule(13, 13, port_filter::blocked);
 	p.apply_port_filter(filter, &st, banned);
 	TEST_EQUAL(st.erased.size(), 1);
-	TEST_EQUAL(st.erased[0]->address(), address_v4::from_string("10.13.0.0"));
+	TEST_EQUAL(st.erased[0]->address(), addr4("10.13.0.0"));
 	TEST_EQUAL(st.erased[0]->port, 13);
 	TEST_EQUAL(p.num_peers(), 99);
 	TEST_EQUAL(p.num_connect_candidates(), 99);
@@ -678,8 +677,7 @@ TORRENT_TEST(has_peer)
 	TEST_EQUAL(p.has_peer(peer2), true);
 
 	ip_filter filter;
-	filter.add_rule(address_v4::from_string("10.10.0.1")
-		, address_v4::from_string("10.10.0.1"), ip_filter::blocked);
+	filter.add_rule(addr4("10.10.0.1"), addr4("10.10.0.1"), ip_filter::blocked);
 	p.apply_ip_filter(filter, &st, banned);
 	TEST_EQUAL(st.erased.size(), 1);
 	st.erased.clear();

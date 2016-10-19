@@ -64,26 +64,25 @@ extern "C" {
 namespace libtorrent
 {
 	// this is a SHA-1 hash class.
-	// 
+	//
 	// You use it by first instantiating it, then call ``update()`` to feed it
 	// with data. i.e. you don't have to keep the entire buffer of which you want to
 	// create the hash in memory. You can feed the hasher parts of it at a time. When
 	// You have fed the hasher with all the data, you call ``final()`` and it
 	// will return the sha1-hash of the data.
-	// 
+	//
 	// The constructor that takes a ``char const*`` and an integer will construct the
 	// sha1 context and feed it the data passed in.
-	// 
+	//
 	// If you want to reuse the hasher object once you have created a hash, you have to
 	// call ``reset()`` to reinitialize it.
-	// 
+	//
 	// The built-in software version of sha1-algorithm was implemented
 	// by Steve Reid and released as public domain.
 	// For more info, see ``src/sha1.cpp``.
 	class TORRENT_EXPORT hasher
 	{
 	public:
-
 		hasher();
 
 		// this is the same as default constructing followed by a call to
@@ -108,7 +107,6 @@ namespace libtorrent
 		~hasher();
 
 	private:
-
 #ifdef TORRENT_USE_LIBGCRYPT
 		gcry_md_hd_t m_context;
 #elif TORRENT_USE_COMMONCRYPTO
@@ -121,7 +119,6 @@ namespace libtorrent
 		sha1_ctx m_context;
 #endif
 	};
-
 }
 
 #endif // TORRENT_HASHER_HPP_INCLUDED

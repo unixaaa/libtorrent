@@ -171,7 +171,6 @@ namespace libtorrent
 		{}
 
 	protected:
-
 		// the pieces the other end have
 		bitfield m_have_piece;
 
@@ -188,7 +187,6 @@ namespace libtorrent
 		std::weak_ptr<torrent> m_torrent;
 
 	public:
-
 		// a back reference to the session
 		// the peer belongs to.
 		aux::session_interface& m_ses;
@@ -197,7 +195,6 @@ namespace libtorrent
 		aux::session_settings const& m_settings;
 
 	protected:
-
 		// this is true if this connection has been added
 		// to the list of connections that will be closed.
 		bool m_disconnecting:1;
@@ -264,7 +261,6 @@ namespace libtorrent
 	friend class invariant_access;
 	friend class torrent;
 	public:
-
 		void on_exception(std::exception const& e) override;
 		void on_error(error_code const& ec) override;
 
@@ -289,7 +285,7 @@ namespace libtorrent
 
 		void set_peer_info(torrent_peer* pi) override
 		{
-			TORRENT_ASSERT(m_peer_info == 0 || pi == 0 );
+			TORRENT_ASSERT(m_peer_info == 0 || pi == 0);
 			TORRENT_ASSERT(pi != nullptr || m_disconnect_started);
 			m_peer_info = pi;
 		}
@@ -700,7 +696,6 @@ namespace libtorrent
 		int get_priority(int channel) const;
 
 	protected:
-
 		virtual void get_specific_peer_info(peer_info& p) const = 0;
 
 		virtual void write_choke() = 0;
@@ -757,7 +752,6 @@ namespace libtorrent
 		io_service& get_io_service() { return m_ios; }
 
 	private:
-
 		// callbacks for data being sent or received
 		void on_send_data(error_code const& error
 			, std::size_t bytes_transferred);
@@ -807,7 +801,6 @@ namespace libtorrent
 		// m_have_piece.end(), true)
 		int m_num_pieces;
 
-
 	public:
 		// upload and download channel state
 		// enum from peer_info::bw_state
@@ -839,14 +832,12 @@ namespace libtorrent
 	public:
 		chained_buffer m_send_buffer;
 	private:
-
 		// the disk thread to use to issue disk jobs to
 		disk_interface& m_disk_thread;
 
 	public:
 		buffer_allocator_interface& m_allocator;
 	private:
-
 		// io service
 		io_service& m_ios;
 
@@ -855,7 +846,6 @@ namespace libtorrent
 		std::list<std::shared_ptr<peer_plugin>> m_extensions;
 #endif
 	private:
-
 		// the average rate of receiving complete piece messages
 		sliding_average<20> m_piece_rate;
 		sliding_average<20> m_send_rate;
@@ -1186,8 +1176,7 @@ namespace libtorrent
 			make_read_handler(Handler const& handler)
 		{
 			return aux::allocating_handler<Handler, TORRENT_READ_HANDLER_MAX_SIZE>(
-				handler, m_read_handler_storage, *this
-			);
+				handler, m_read_handler_storage, *this);
 		}
 
 		template <class Handler>
@@ -1195,8 +1184,7 @@ namespace libtorrent
 			make_write_handler(Handler const& handler)
 		{
 			return aux::allocating_handler<Handler, TORRENT_WRITE_HANDLER_MAX_SIZE>(
-				handler, m_write_handler_storage, *this
-			);
+				handler, m_write_handler_storage, *this);
 		}
 
 #if TORRENT_USE_ASSERTS

@@ -74,7 +74,6 @@ namespace libtorrent
 		void enable_ip_broadcast(bool e);
 
 	private:
-
 		struct socket_entry
 		{
 			explicit socket_entry(std::shared_ptr<udp::socket> const& s)
@@ -142,5 +141,5 @@ namespace libtorrent
 		bool m_abort;
 	};
 }
-	
+
 #endif

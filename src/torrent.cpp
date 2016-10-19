@@ -636,8 +636,7 @@ namespace libtorrent
 					? "override-trackers"  : ""
 				, (p.flags & add_torrent_params::flag_override_web_seeds)
 					? "override-web-seeds " : ""
-				, p.save_path.c_str()
-				);
+				, p.save_path.c_str());
 		}
 #endif
 		if (p.flags & add_torrent_params::flag_sequential_download)
@@ -723,7 +722,7 @@ namespace libtorrent
 #ifdef TORRENT_USE_OPENSSL
 				, m_ssl_ctx.get()
 #endif
-				));
+				)); // NOLINT
 		aux::proxy_settings ps = m_ses.proxy();
 		conn->get(m_url, seconds(30), 0, &ps
 			, 5
@@ -3654,7 +3653,6 @@ namespace libtorrent
 			{
 				std::fprintf(stderr, "   %d:%d  %d\n", p.first.piece_index, p.first.block_index, p.second);
 			}
-
 		}
 
 		TORRENT_ASSERT(st.total_done <= m_torrent_file->total_size());
@@ -3740,7 +3738,6 @@ namespace libtorrent
 			TORRENT_ASSERT(ret == -1);
 			update_gauge();
 		}
-
 	}
 
 	void torrent::add_suggest_piece(int const index)
@@ -4784,7 +4781,6 @@ namespace libtorrent
 			update_peer_interest(was_finished);
 			if (priority == 0) remove_time_critical_piece(index);
 		}
-
 	}
 
 	int torrent::piece_priority(int index) const
@@ -5965,7 +5961,7 @@ namespace libtorrent
 #ifdef TORRENT_USE_OPENSSL
 				|| s->get<ssl_stream<socks5_stream>>()
 #endif
-				))
+				)) // NOLINT
 		{
 			// we're using a socks proxy and we're resolving
 			// hostnames through it
@@ -6064,7 +6060,7 @@ namespace libtorrent
 				, num_peers());
 #endif
 		}
-		TORRENT_CATCH (std::exception const& e)
+		TORRENT_CATCH(std::exception const& e)
 		{
 			TORRENT_DECLARE_DUMMY(std::exception, e);
 			(void)e;
@@ -6389,7 +6385,6 @@ namespace libtorrent
 		// are file priorities set, don't save piece priorities.
 		if (!m_file_priority.empty())
 		{
-
 			// when in seed mode (i.e. the client promises that we have all files)
 			// it does not make sense to save file priorities.
 			if (!m_seed_mode)
@@ -6547,7 +6542,6 @@ namespace libtorrent
 			pi.piece_index = i->index;
 			queue->push_back(pi);
 		}
-
 	}
 
 	bool torrent::connect_to_peer(torrent_peer* peerinfo, bool const ignore_limit)
@@ -6713,7 +6707,7 @@ namespace libtorrent
 					std::shared_ptr<peer_plugin> pp(ext->new_connection(
 						peer_connection_handle(c->self())));
 					if (pp) c->add_extension(pp);
-				} TORRENT_CATCH (std::exception const&) {}
+				} TORRENT_CATCH(std::exception const&) {}
 			}
 #endif
 
@@ -6733,7 +6727,7 @@ namespace libtorrent
 
 			if (c->is_disconnecting()) return false;
 		}
-		TORRENT_CATCH (std::exception const&)
+		TORRENT_CATCH(std::exception const&)
 		{
 			peer_iterator i = sorted_find(m_connections, c.get());
 			if (i != m_connections.end())
@@ -7026,7 +7020,7 @@ namespace libtorrent
 			peers_erased(st.erased);
 			update_want_peers();
 		}
-		TORRENT_CATCH (std::exception const& e)
+		TORRENT_CATCH(std::exception const& e)
 		{
 			TORRENT_DECLARE_DUMMY(std::exception, e);
 			(void)e;
@@ -7655,7 +7649,7 @@ namespace libtorrent
 		{
 			TORRENT_TRY {
 				ext->on_files_checked();
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 
@@ -7904,7 +7898,8 @@ namespace libtorrent
 		TORRENT_ASSERT(want_peers_download() == m_links[aux::session_interface::torrent_want_peers_download].in_list());
 		TORRENT_ASSERT(want_peers_finished() == m_links[aux::session_interface::torrent_want_peers_finished].in_list());
 		TORRENT_ASSERT(want_tick() == m_links[aux::session_interface::torrent_want_tick].in_list());
-		TORRENT_ASSERT((m_paused && m_auto_managed && !m_abort) == m_links[aux::session_interface::torrent_want_scrape].in_list());
+		TORRENT_ASSERT((m_paused && m_auto_managed && !m_abort)
+			== m_links[aux::session_interface::torrent_want_scrape].in_list());
 
 		bool is_checking = false;
 		bool is_downloading = false;
@@ -8612,7 +8607,7 @@ namespace libtorrent
 		{
 			TORRENT_TRY {
 				if (ext->on_pause()) return;
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 
@@ -8849,7 +8844,7 @@ namespace libtorrent
 		{
 			TORRENT_TRY {
 				if (ext->on_resume()) return;
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 
@@ -9087,7 +9082,7 @@ namespace libtorrent
 		{
 			TORRENT_TRY {
 				ext->tick();
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 
 		if (m_abort) return;
@@ -9203,7 +9198,7 @@ namespace libtorrent
 			TORRENT_TRY {
 				p->second_tick(tick_interval_ms);
 			}
-			TORRENT_CATCH (std::exception const& e)
+			TORRENT_CATCH(std::exception const& e)
 			{
 				TORRENT_DECLARE_DUMMY(std::exception, e);
 				(void)e;
@@ -10645,7 +10640,7 @@ namespace libtorrent
 		{
 			TORRENT_TRY {
 				ext->on_state(m_state);
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 	}
@@ -10658,7 +10653,7 @@ namespace libtorrent
 		{
 			TORRENT_TRY {
 				ext->on_add_peer(ip, src, flags);
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 	}
 #endif

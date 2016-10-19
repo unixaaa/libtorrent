@@ -336,7 +336,6 @@ namespace libtorrent
 #endif
 
 	private:
-
 		handle_type m_file_handle;
 #ifdef TORRENT_DISK_STATS
 		std::uint32_t m_file_id;
@@ -353,7 +352,6 @@ namespace libtorrent
 	};
 
 	TORRENT_EXTRA_EXPORT int bufs_size(file::iovec_t const* bufs, int num_bufs);
-
 }
 
 #endif // TORRENT_FILE_HPP_INCLUDED

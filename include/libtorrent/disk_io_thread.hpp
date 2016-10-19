@@ -150,7 +150,7 @@ namespace libtorrent
 
 		// the total number of write operations performed since this
 		// session was started.
-		// 
+		//
 		// The ratio (``blocks_written`` - ``writes``) / ``blocks_written`` represents
 		// the number of saved write operations per total write operations. i.e. a kind
 		// of cache hit ratio for the write cahe.
@@ -422,7 +422,6 @@ namespace libtorrent
 		void call_job_handlers(void* userdata);
 
 	private:
-
 		struct job_queue : pool_thread_interface
 		{
 			job_queue(disk_io_thread& owner, thread_type_t type)
@@ -517,13 +516,18 @@ namespace libtorrent
 			// used for asserts and only applies for fence jobs
 			flush_expect_clear = 8
 		};
-		void flush_cache(piece_manager* storage, std::uint32_t flags, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
-		void flush_expired_write_blocks(jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
-		void flush_piece(cached_piece_entry* pe, int flags, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
+		void flush_cache(piece_manager* storage, std::uint32_t flags
+			, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
+		void flush_expired_write_blocks(jobqueue_t& completed_jobs
+			, std::unique_lock<std::mutex>& l);
+		void flush_piece(cached_piece_entry* pe, int flags
+			, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
 
-		int try_flush_hashed(cached_piece_entry* p, int cont_blocks, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
+		int try_flush_hashed(cached_piece_entry* p, int cont_blocks
+			, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
 
-		void try_flush_write_blocks(int num, jobqueue_t& completed_jobs, std::unique_lock<std::mutex>& l);
+		void try_flush_write_blocks(int num, jobqueue_t& completed_jobs
+			, std::unique_lock<std::mutex>& l);
 
 		// used to batch reclaiming of blocks to once per cycle
 		void commit_reclaimed_blocks();

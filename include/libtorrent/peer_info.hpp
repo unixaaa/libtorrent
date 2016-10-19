@@ -91,7 +91,7 @@ namespace libtorrent
 
 			// means that this peer supports the
 			// `extension protocol`__.
-			// 
+			//
 			// __ extension_protocol.html
 			supports_extensions = 0x10,
 
@@ -417,7 +417,6 @@ namespace libtorrent
 		// have got this amount of free download.
 		std::int64_t load_balancing;
 #endif
-
 	};
 
 	// internal

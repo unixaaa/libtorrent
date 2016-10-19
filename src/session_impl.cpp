@@ -600,7 +600,7 @@ namespace aux {
 		m_lsd_announce_timer.expires_from_now(seconds(delay), ec);
 		ADD_OUTSTANDING_ASYNC("session_impl::on_lsd_announce");
 		m_lsd_announce_timer.async_wait([this](error_code const& e) {
-			this->wrap(&session_impl::on_lsd_announce, e); } );
+			this->wrap(&session_impl::on_lsd_announce, e); });
 		TORRENT_ASSERT(!ec);
 
 #ifndef TORRENT_DISABLE_LOGGING
@@ -668,7 +668,7 @@ namespace aux {
 		{
 			TORRENT_TRY {
 				ext->save_state(*eptr);
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 	}
@@ -778,7 +778,7 @@ namespace aux {
 		{
 			TORRENT_TRY {
 				ext->load_state(*e);
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 	}
@@ -1216,7 +1216,7 @@ namespace aux {
 	{
 		if (m_deferred_submit_disk_jobs) return;
 		m_deferred_submit_disk_jobs = true;
-		m_io_service.post([this] { this->wrap(&session_impl::submit_disk_jobs); } );
+		m_io_service.post([this] { this->wrap(&session_impl::submit_disk_jobs); });
 	}
 
 	void session_impl::submit_disk_jobs()
@@ -3064,7 +3064,7 @@ namespace aux {
 		{
 			TORRENT_TRY {
 				ext->on_tick();
-			} TORRENT_CATCH (std::exception const&) {}
+			} TORRENT_CATCH(std::exception const&) {}
 		}
 #endif
 
@@ -3237,7 +3237,6 @@ namespace aux {
 					++m_next_scrape_torrent;
 					if (m_next_scrape_torrent >= int(want_scrape.size()))
 						m_next_scrape_torrent = 0;
-
 				}
 			}
 		}
@@ -3456,8 +3455,7 @@ namespace aux {
 		error_code ec;
 		m_dht_announce_timer.expires_from_now(seconds(delay), ec);
 		m_dht_announce_timer.async_wait([this](error_code const& err) {
-				this->wrap(&session_impl::on_dht_announce, err); }
-			);
+				this->wrap(&session_impl::on_dht_announce, err); });
 
 		if (!m_dht_torrents.empty())
 		{
@@ -3808,7 +3806,7 @@ namespace aux {
 #else
 			, last_optimistic_unchoke_cmp()
 #endif
-			);
+			); // NOLINT
 
 		// unchoke the first num_opt_unchoke peers in the candidate set
 		// and make sure that the others are choked
@@ -4306,7 +4304,6 @@ namespace aux {
 					t->set_queue_position_impl(t->queue_position()-1);
 					t->state_updated();
 				}
-
 			}
 			me->set_queue_position_impl((std::min)(m_max_queue_pos, p));
 		}

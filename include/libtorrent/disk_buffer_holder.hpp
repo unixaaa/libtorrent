@@ -60,7 +60,7 @@ namespace libtorrent
 	// The disk buffer holder acts like a ``unique_ptr`` that frees a disk buffer
 	// when it's destructed, unless it's released. ``release`` returns the disk
 	// buffer and transfers ownership and responsibility to free it to the caller.
-	// 
+	//
 	// ``get()`` returns the pointer without transferring ownership. If
 	// this buffer has been released, ``get()`` will return nullptr.
 	struct TORRENT_EXTRA_EXPORT disk_buffer_holder
@@ -111,12 +111,10 @@ namespace libtorrent
 		explicit operator bool() const noexcept { return m_buf != nullptr; }
 
 	private:
-
 		buffer_allocator_interface* m_allocator;
 		char* m_buf;
 		block_cache_reference m_ref;
 	};
-
 }
 
 #endif

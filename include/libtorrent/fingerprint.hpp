@@ -43,16 +43,14 @@ POSSIBILITY OF SUCH DAMAGE.
 
 namespace libtorrent
 {
-
 	// The fingerprint class represents information about a client and its version. It is used
 	// to encode this information into the client's peer id.
 	struct TORRENT_DEPRECATED_EXPORT fingerprint
 	{
-
 		// The constructor takes a ``char const*`` that should point to a string constant containing
 		// exactly two characters. These are the characters that should be unique for your client. Make
 		// sure not to clash with anybody else. Here are some taken id's:
-		// 
+		//
 		// +----------+-----------------------+
 		// | id chars | client                |
 		// +==========+=======================+
@@ -70,9 +68,9 @@ namespace libtorrent
 		// +----------+-----------------------+
 		// | 'XT'     | Xan Torrent           |
 		// +----------+-----------------------+
-		// 
+		//
 		// There's an informal directory of client id's here_.
-		// 
+		//
 		// .. _here: http://wiki.theory.org/BitTorrentSpecification#peer_id
 		//
 		// The ``major``, ``minor``, ``revision`` and ``tag`` parameters are used to identify the
@@ -113,7 +111,6 @@ namespace libtorrent
 		int tag_version;
 
 	private:
-
 		char version_to_char(int v) const
 		{
 			if (v >= 0 && v < 10) return char('0' + v);
@@ -121,7 +118,6 @@ namespace libtorrent
 			TORRENT_ASSERT_FAIL();
 			return '0';
 		}
-
 	};
 
 }
